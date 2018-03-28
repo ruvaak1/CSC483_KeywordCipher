@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KeywordCipher.iml" filepath="$PROJECT_DIR$/.idea/modules/KeywordCipher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KeywordCipher_main.iml" filepath="$PROJECT_DIR$/.idea/modules/KeywordCipher_main.iml" group="KeywordCipher" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KeywordCipher_test.iml" filepath="$PROJECT_DIR$/.idea/modules/KeywordCipher_test.iml" group="KeywordCipher" />
+    </modules>
+  </component>
+</project>
