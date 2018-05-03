@@ -24,7 +24,7 @@ public class KeywordCipher {
     }
 
     public void setCipherText(String cipherText) {
-        this.cipherText = cipherText.toUpperCase();
+        this.cipherText = cipherText.toUpperCase().replaceAll("[^A-Za-z]", "");
     }
 
     public String getCipherText() {
@@ -87,9 +87,75 @@ public class KeywordCipher {
         setKeywordPos(keywordPos);
         makeKeyArray();
 
-        cipherText = this.plainText;
+        this.cipherText = this.plainText;
         for (int i = 0; i < 26; i++) {
-            cipherText = cipherText.replace(lowerCaseArray[i], keyArray.get(i));
+            this.cipherText = this.cipherText.replace(lowerCaseArray[i], keyArray.get(i));
         }
+    }
+
+    public void decipher(String cipherText, String keyword, char keywordPos) {
+        setCipherText(cipherText);
+        setKeyword(keyword);
+        setKeywordPos(keywordPos);
+        makeKeyArray();
+
+        this.plainText = this.cipherText;
+        for (int i = 0; i < 26; i++) {
+            this.plainText = this.plainText.replace(keyArray.get(i), lowerCaseArray[i]);
+        }
+    }
+
+    public String findCrib(String cipherText, String crib) {
+        setCipherText(cipherText);
+        String output = "";
+        int letterCount = 0;
+        int cribLength = crib.length();
+        int loopMax = this.cipherText.length() - cribLength;
+        int[] cribAsNumbers = new int[cribLength];
+        int[] compareNumbers = new int[cribLength];
+        ArrayList<Character> repeatLetters = new ArrayList<Character>();
+
+        for (int i = 0; i < cribLength; i++) {
+            char currChar = crib.charAt(i);
+
+            if (!repeatLetters.contains(currChar)) {
+                repeatLetters.add(currChar);
+                cribAsNumbers[i] = letterCount;
+                letterCount += 1;
+            }
+            else {
+                cribAsNumbers[i] = cribAsNumbers[repeatLetters.indexOf(currChar)];
+            }
+        }
+
+        for (int i = 0; i <= loopMax; i++) {
+            letterCount = 0;
+            repeatLetters = new ArrayList<Character>();
+            boolean possiblePos = true;
+
+            for (int j = 0; j < cribLength; j++) {
+                char currChar = this.cipherText.charAt(i + j);
+
+                if (!repeatLetters.contains(currChar)) {
+                    repeatLetters.add(currChar);
+                    compareNumbers[j] = letterCount;
+                    letterCount += 1;
+                }
+                else {
+                    compareNumbers[j] = compareNumbers[repeatLetters.indexOf(currChar)];
+                }
+
+                if (compareNumbers[j] != cribAsNumbers[j]) {
+                    possiblePos = false;
+                    j = cribLength;
+                }
+            }
+
+            if (possiblePos) {
+                output += (i + 1) + " - " + this.cipherText.substring(i, i + cribLength) + "\n";
+            }
+        }
+
+        return output;
     }
 }
